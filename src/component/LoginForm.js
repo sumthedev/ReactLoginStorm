@@ -113,12 +113,7 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-            {/* Step 3: Display the error message */}
-            {props.passwordLengthError && (
-              <p className="text-red-600">
-                Password must be at least 8 characters
-              </p>
-            )}
+          
 
             <InputField
               label="Password:"
@@ -132,7 +127,12 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-
+              {/* Step 3: Display the error message */}
+            {props.passwordLengthError && (
+              <p className="text-red-600">
+                Password must be at least 8 characters
+              </p>
+            )}
             <Checkbox label="Remember me" id="remember" onClick={handleCheck} />
 
             <button
