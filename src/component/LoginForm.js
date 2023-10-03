@@ -129,7 +129,7 @@ const LoginForm = (props) => {
             />
               {/* Step 3: Display the error message */}
             {props.passwordLengthError && (
-              <p className="text-red-600">
+              <p className="text-red-600 mb-4">
                 Password must be at least 8 characters
               </p>
             )}
