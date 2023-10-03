@@ -6,6 +6,7 @@ import {
   setName,
   setClick,
   setRememberMe,
+  setPasswordLengthError,
 } from "./redux/actions/authActions";
 import InputField from "./InputField";
 import Checkbox from "./Checkbox";
@@ -48,6 +49,10 @@ const LoginForm = (props) => {
   const handlePasswordChange = (e) => {
     const password = e.target.value;
     const isPassword = isPasswordValid(password);
+
+    // Step 2: Update the state variable based on password length
+    props.setPasswordLengthError(password.length < 8);
+
     props.setPasswordValid(isPassword);
     console.log(isPassword);
   };
@@ -108,6 +113,12 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
+            {/* Step 3: Display the error message */}
+            {props.passwordLengthError && (
+              <p className="text-red-600">
+                Password must be at least 8 characters
+              </p>
+            )}
 
             <InputField
               label="Password:"
@@ -146,6 +157,7 @@ const mapStateToProps = (state) => ({
   isClick: state.isClick,
   isRemember: state.isRemember,
   name: state.name,
+  passwordLengthError: state.passwordLengthError,
 });
 
 const mapDispatchToProps = {
@@ -154,6 +166,7 @@ const mapDispatchToProps = {
   setName,
   setClick,
   setRememberMe,
+  setPasswordLengthError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

@@ -24,3 +24,8 @@ export const setRememberMe = (isRemember) => ({
   type: "SET_REMEMBER",
   payload: isRemember,
 });
+
+export const setPasswordLengthError = (passwordLengthError) => ({
+  type: "SET_PASSWORD_LENGTH",
+  payload: passwordLengthError,
+});
