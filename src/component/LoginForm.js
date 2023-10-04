@@ -26,15 +26,20 @@ function isPasswordValid(password) {
 
 const LoginForm = (props) => {
   useEffect(() => {
-    // Check if there is a previously saved email in localStorage
-    const savedEmail = localStorage.getItem("rememberedEmail");
-    console.log(savedEmail);
-    // If there is a saved email, set it in state
+    const savedEmail = window.localStorage.getItem("rememberedEmail");
+
     if (savedEmail) {
-      props.setName(savedEmail);
-     
+      try {
+        const parsedEmail = JSON.parse(savedEmail);
+        console.log(parsedEmail);
+        // Set the parsed email in state if needed
+        props.setName(parsedEmail);
+        props.setClick(true); // Set isClick to true to show the Logout page
+      } catch (error) {
+        console.error("Error parsing savedEmail:", error);
+      }
     }
-  });
+  }, []);
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
@@ -57,13 +62,8 @@ const LoginForm = (props) => {
   };
 
   const handleLogin = () => {
-
-    if (props.isValid) {
-      props.setClick(true); // Set isClick to true to show the Logout component
-      // Save the email to localStorage if Remember Me is checked
-      if (props.isRemember) {
-        localStorage.setItem("rememberedEmail", props.name);
-      }
+    if (props.isValid && props.isRemember) {
+      props.setClick(true);
     }
   };
 
@@ -73,13 +73,14 @@ const LoginForm = (props) => {
   };
 
   const handleCheck = () => {
-    const rememberMeChecked = !props.isRemember; // Toggle the value
+    const rememberMeChecked = !props.isRemember;
 
     props.setRememberMe(rememberMeChecked);
 
     // If Remember Me is checked, save the email to localStorage
     if (rememberMeChecked) {
-      localStorage.setItem("rememberedEmail", props.name);
+      const email = props.name;
+      window.localStorage.setItem("rememberedEmail", JSON.stringify(email));
     } else {
       localStorage.removeItem("rememberedEmail"); // Remove the email from localStorage
     }
@@ -112,7 +113,6 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-          
 
             <InputField
               label="Password:"
@@ -126,12 +126,14 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-              {/* Step 3: Display the error message */}
+
+            {/* Step 3: Display the error message */}
             {props.passwordLengthError && (
               <p className="text-red-600 mb-4">
                 Password must be at least 8 characters
               </p>
             )}
+
             <Checkbox label="Remember me" id="remember" onClick={handleCheck} />
 
             <button
