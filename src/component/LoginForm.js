@@ -32,8 +32,7 @@ const LoginForm = (props) => {
     // If there is a saved email, set it in state
     if (savedEmail) {
       props.setName(savedEmail);
-      props.setRememberMe(true); // Set Remember Me to true
-      props.setClick(true); // Set isClick to true to show the Logout component
+     
     }
   });
 
@@ -58,8 +57,8 @@ const LoginForm = (props) => {
   };
 
   const handleLogin = () => {
-    // For simplicity, let's assume the user is authenticated if they have a valid email and password
-    if (props.isValid && props.passwordValid) {
+
+    if (props.isValid) {
       props.setClick(true); // Set isClick to true to show the Logout component
       // Save the email to localStorage if Remember Me is checked
       if (props.isRemember) {
