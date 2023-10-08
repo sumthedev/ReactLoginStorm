@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; // Import useState
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   setEmailValid,
@@ -26,8 +26,9 @@ function isPasswordValid(password) {
 }
 
 const LoginForm = (props) => {
-  const [emailMessage, setEmailMessage] = useState(""); // State for email message
-  const [passwordMessage, setPasswordMessage] = useState(""); // State for password message
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [rememberMeChecked, setRememberMeChecked] = useState(false); // Track Remember me checkbox
 
   useEffect(() => {
     const savedEmail = window.localStorage.getItem("rememberedEmail");
@@ -43,7 +44,7 @@ const LoginForm = (props) => {
         console.error("Error parsing savedEmail:", error);
       }
     }
-  });
+  }, []);
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
@@ -53,7 +54,6 @@ const LoginForm = (props) => {
     props.setEmailValid(!isInvalid);
     props.setEmailError(isInvalid);
 
-    // Set email message
     setEmailMessage(isInvalid ? "Your email is not correct" : "Your email is correct");
   };
 
@@ -61,41 +61,37 @@ const LoginForm = (props) => {
     const password = e.target.value;
     const isPassword = isPasswordValid(password);
 
-    // Set password message
-    setPasswordMessage(isPassword ? "Your password is correct" : "Password requirements: 8+ characters, 1 digit, 1 special symbol, 1 uppercase letter");
+    setPasswordMessage(
+      isPassword
+        ? "Your password is correct"
+        : "Password requirements: 8+ characters, 1 digit, 1 special symbol, 1 uppercase letter"
+    );
 
-    // Step 2: Update the state variable based on password length
     props.setPasswordLengthError(password.length < 8);
-
     props.setPasswordValid(isPassword);
   };
 
   const handleLogin = () => {
-    if (props.isValid && props.isPassword) {
+    if (props.isValid && props.name && props.passwordValid) {
       props.setClick(true);
+
+      // Save "Remember me" preference to localStorage when logging in
+      if (rememberMeChecked) {
+        const email = props.name;
+        window.localStorage.setItem("rememberedEmail", JSON.stringify(email));
+      }
     } else {
-      alert("You entered the wrong input. Try again");
+      alert("Please enter valid email and password.");
     }
   };
 
   const handleLogout = () => {
-    props.setClick(false); // Set isClick to false to show the login form
-    localStorage.removeItem("rememberedEmail"); // Remove the email from localStorage when logging out
+    props.setClick(false);
+    localStorage.removeItem("rememberedEmail");
   };
 
   const handleCheck = () => {
-    const rememberMeChecked = !props.isRemember;
-
-    props.setRememberMe(rememberMeChecked);
-
-    // If Remember Me is checked, save the email to localStorage
-    if (rememberMeChecked) {
-      const email = props.name;
-
-      window.localStorage.setItem("rememberedEmail", JSON.stringify(email));
-    } else {
-      localStorage.removeItem("rememberedEmail"); // Remove the email from localStorage
-    }
+    setRememberMeChecked(!rememberMeChecked);
   };
 
   return (
@@ -125,7 +121,13 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-            <p className={props.isEmailError ? "text-red-600 mb-4" : "text-green-600 mb-4"}>{emailMessage}</p>
+            <p
+              className={
+                props.isEmailError ? "text-red-600 mb-4" : "text-green-600 mb-4"
+              }
+            >
+              {emailMessage}
+            </p>
 
             <InputField
               label="Password:"
@@ -139,7 +141,15 @@ const LoginForm = (props) => {
                   : "w-[67%] border border-red-600 py-2 px-3"
               }
             />
-            <p className={props.passwordLengthError || !props.passwordValid ? "text-red-600 mb-4" : "text-green-600 mb-4"}>{passwordMessage}</p>
+            <p
+              className={
+                props.passwordLengthError || !props.passwordValid
+                  ? "text-red-600 mb-4"
+                  : "text-green-600 mb-4"
+              }
+            >
+              {passwordMessage}
+            </p>
 
             <Checkbox label="Remember me" id="remember" onClick={handleCheck} />
 
