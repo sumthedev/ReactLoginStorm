@@ -29,3 +29,8 @@ export const setPasswordLengthError = (passwordLengthError) => ({
   type: "SET_PASSWORD_LENGTH",
   payload: passwordLengthError,
 });
+
+export const setEmailError = (isEmailError) => ({
+  type: "SET_Email_ERROR",
+  payload: isEmailError,
+});
