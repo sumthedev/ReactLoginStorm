@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="container flex items-center justify-between">
           <ul className="flex space-x-20">
             <li>
-              <a href="#home" className="text-black hidden hover:text-blue-500">
+              <a href="#home" className="text-black  hover:text-blue-500">
                 Home
               </a>
             </li>
