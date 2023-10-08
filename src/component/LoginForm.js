@@ -62,9 +62,10 @@ const LoginForm = (props) => {
   };
 
   const handleLogin = () => {
-    if (props.isValid && props.isRemember) {
+    if (props.isValid) {
       props.setClick(true);
-    }
+    } else {
+      alert("You enter the wrong input, Please try again");
   };
 
   const handleLogout = () => {
