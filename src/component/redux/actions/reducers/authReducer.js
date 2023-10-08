@@ -6,6 +6,7 @@ const initialState = {
   isClick: false,
   isRemember: false,
   passwordLengthError: false,
+  isEmailError: false,
   name: "",
 };
 
@@ -26,6 +27,8 @@ const authReducer = (state = initialState, action) => {
       return { ...state, isRemember: action.payload };
     case "SET_PASSWORD_LENGTH":
       return { ...state, passwordLengthError: action.payload };
+    case "SET_Email_ERROR":
+      return { ...state, isEmailError: action.payload };
 
     default:
       return state;
