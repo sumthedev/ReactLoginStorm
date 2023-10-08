@@ -71,7 +71,7 @@ const LoginForm = (props) => {
   };
 
   const handleLogin = () => {
-    if (props.isValid) {
+    if (props.isValid && props.isPassword) {
       props.setClick(true);
     } else {
       alert("You entered the wrong input. Try again");
