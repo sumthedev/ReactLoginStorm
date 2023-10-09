@@ -90,6 +90,8 @@ const LoginForm = (props) => {
     e.preventDefault();
     props.setClick(false);
     localStorage.removeItem("rememberedEmail");
+    setEmailMessage("");
+    setPasswordMessage("");
   };
 
   const handleCheck = () => {
