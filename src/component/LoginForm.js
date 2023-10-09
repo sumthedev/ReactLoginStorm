@@ -71,7 +71,8 @@ const LoginForm = (props) => {
     props.setPasswordValid(isPassword);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     if (props.isValid && props.name && props.passwordValid) {
       props.setClick(true);
 
@@ -85,7 +86,8 @@ const LoginForm = (props) => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     props.setClick(false);
     localStorage.removeItem("rememberedEmail");
   };
